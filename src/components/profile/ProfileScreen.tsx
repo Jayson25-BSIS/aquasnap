@@ -187,7 +187,7 @@ export function ProfileScreen({ onBack }: ProfileScreenProps): JSX.Element {
                       
                       <div className="grid grid-cols-2 gap-4 mt-6">
                         <div className="text-center">
-                          <div className="text-2xl font-bold">{currentUser.totalPoints.toLocaleString()}</div>
+                          <div className="text-2xl font-bold">{currentUser.totalPoints?.toLocaleString()}</div>
                           <div className="text-blue-100 text-sm">Total Points</div>
                         </div>
                         <div className="text-center">
@@ -447,7 +447,7 @@ export function ProfileScreen({ onBack }: ProfileScreenProps): JSX.Element {
                           )}
                         </div>
                         <div className="text-sm text-gray-600">
-                          Level {player.level} • {player.points.toLocaleString()} points
+                          Level {player.level} • {player.points?.toLocaleString()} points
                         </div>
                       </div>
                       
