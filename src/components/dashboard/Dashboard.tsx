@@ -97,11 +97,13 @@ export function Dashboard({ onNavigate }: DashboardProps): JSX.Element {
         {isOpen && (
           <div className="md:hidden bg-white border-t shadow-sm">
             <div className="px-4 py-3 space-y-2">
-              <div className="flex items-center space-x-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                <Coins size={16} />
-                <span>{(currentUser.currentSpendablePoints || 0).toLocaleString()}</span>
-                <span className="text-xs opacity-90">spendable</span>
-              </div>
+               <div className="flex items-center space-x-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-3 py-1 rounded-full text-sm font-semibold">
+              <Coins size={16} />
+              <span>
+                {(currentUser.currentSpendablePoints || 0).toLocaleString()}
+              </span>
+              <span className="text-xs opacity-90">spendable</span>
+            </div>
               <Button
                 variant="ghost"
                 onClick={() => { onNavigate('learning'); setIsOpen(false); }}
