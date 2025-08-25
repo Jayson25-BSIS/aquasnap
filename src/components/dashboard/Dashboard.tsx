@@ -1,12 +1,15 @@
 'use client';
 
-import React, { JSX } from 'react';
+import React, { JSX, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { useUserStore } from '@/store/userStore';
-import { Trophy, Star, Play, User, Award, Target, Fish, BookOpen, Coins } from 'lucide-react';
+import { 
+  Trophy, Star, Play, User, Award, Target, Fish, BookOpen, Coins, 
+  Menu, X 
+} from 'lucide-react';
 
 interface DashboardProps {
   onNavigate: (screen: 'dashboard' | 'games' | 'profile' | 'fishtank' | 'learning' | 'purpose') => void;
@@ -14,6 +17,7 @@ interface DashboardProps {
 
 export function Dashboard({ onNavigate }: DashboardProps): JSX.Element {
   const { currentUser, logout } = useUserStore();
+  const [isOpen, setIsOpen] = useState(false);
 
   if (!currentUser) return <div>Loading...</div>;
 
@@ -30,17 +34,22 @@ export function Dashboard({ onNavigate }: DashboardProps): JSX.Element {
       <div className="bg-white/80 backdrop-blur-sm shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
+            
+            {/* Logo + Title */}
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white text-xl">
                 🐠
               </div>
-              <div>
+              <div className="hidden sm:block">
                 <h1 className="text-xl font-bold text-gray-900">AQUASNAP</h1>
-                <p className="text-sm text-gray-600">Welcome back, {currentUser.username}!</p>
+                <p className="text-sm text-gray-600">
+                  Welcome back, {currentUser.username}!
+                </p>
               </div>
             </div>
-            
-            <div className="flex items-center space-x-4">
+
+            {/* Desktop Menu */}
+            <div className="hidden md:flex items-center space-x-4">
               <div className="flex items-center space-x-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-3 py-1 rounded-full text-sm font-semibold">
                 <Coins size={16} />
                 <span>{(currentUser.currentSpendablePoints || 0).toLocaleString()}</span>
@@ -70,8 +79,55 @@ export function Dashboard({ onNavigate }: DashboardProps): JSX.Element {
                 Logout
               </Button>
             </div>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <Button
+                variant="ghost"
+                onClick={() => setIsOpen(!isOpen)}
+                className="p-2"
+              >
+                {isOpen ? <X size={20} /> : <Menu size={20} />}
+              </Button>
+            </div>
           </div>
         </div>
+
+        {/* Mobile Dropdown */}
+        {isOpen && (
+          <div className="md:hidden bg-white border-t shadow-sm">
+            <div className="px-4 py-3 space-y-2">
+              <div className="flex items-center space-x-2 bg-gradient-to-r from-yellow-400 to-orange-400 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                <Coins size={16} />
+                <span>{(currentUser.currentSpendablePoints || 0).toLocaleString()}</span>
+                <span className="text-xs opacity-90">spendable</span>
+              </div>
+              <Button
+                variant="ghost"
+                onClick={() => { onNavigate('learning'); setIsOpen(false); }}
+                className="w-full flex items-center justify-start space-x-2"
+              >
+                <BookOpen size={16} />
+                <span>Marine Learning Hub</span>
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() => { onNavigate('profile'); setIsOpen(false); }}
+                className="w-full flex items-center justify-start space-x-2"
+              >
+                <User size={16} />
+                <span>Profile</span>
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() => { logout(); setIsOpen(false); }}
+                className="w-full text-red-600 hover:text-red-700 hover:bg-red-50"
+              >
+                Logout
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
